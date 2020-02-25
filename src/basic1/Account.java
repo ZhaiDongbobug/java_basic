@@ -4,68 +4,40 @@ import java.util.Scanner;
 
 public class Account {
 
-	double balance = 5000;
+	protected double balance = 5000;//#是protected的意思
+	public Account(double balance) {
+		this.balance = balance;
+	}
 	public double getBalance() {
-		return this.balance; 
+		return balance; 
 	}
 	//存钱
-	public boolean deposit(int money) {
-		if(money > 0) {
-			balance += money;
+	public void deposit(double amt) {
+		if(amt > 0) {
+			this.balance += amt;
 		}else {
-			System.out.println("输入金额有误！请重新输入：");
-			return false;
+			System.out.println("输入错误！请重新输入！");
 		}
-		return true;
 	}
 	//取钱
-	public void withdraw(int money){
-		if(money>)
-		balance -= money;
-		System.out.println("取钱成功！");			
+	public void withdraw(double amt) throws OverDraftException{
+		if(this.balance < amt)
+			throw new OverDraftException("余额不足",amt - this.balance);
+		this.balance -= amt;
 	}
-	public static void service(Account ac) throws OverdraftException {
-		System.out.println("请选择你的业务！");
-		System.out.println("1.查询当前余额");
-		System.out.println("2.存钱");
-		System.out.println("3.取钱");
-		System.out.println("请输入数字：");
-		
-		int money = 0;
-		Scanner sc = new Scanner(System.in);
-		int i = sc.nextInt();
-		switch(i)
-		{
-		case 1:
-			int balanceTempt = ac.getBalance();
-			System.out.println("当前余额为："+ balanceTempt);
-			break;
-		case 2:
-			System.out.println("请输入您要存储的金额");
-			money = sc.nextInt();
-			boolean dep = ac.deposit(money);
-			if(dep==true) {
-				System.out.println("存款成功！");
-			}
-			break;
-		case 3:
-			System.out.println("请输入要取出的金额：");
-			money = sc.nextInt();
-			try {
-				ac.withdraw(money);
-			}catch(OverdraftException e) {
-				e.printStackTrace();
-			}
-			
-			break;	
-		}
-	}
-	public static void main(String[] args) throws OverdraftException {
+	public static void main(String[] args) {
 		// TODO Auto-generated method stub
 		
-		Account ac = new Account();
-		service(ac);
-		
+		Account ac = new Account(1000);
+		ac.deposit(1000);
+		System.out.println(ac.getBalance());
+		Scanner sc = new Scanner(System.in);
+		try {
+			ac.withdraw(sc.nextInt());
+		}catch(OverDraftException e) {
+			System.err.println("透支金额为" + e.getDeficit());
+			e.printStackTrace();
+		}
 	}
 
 }
