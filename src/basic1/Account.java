@@ -4,9 +4,8 @@ import java.util.Scanner;
 
 public class Account {
 
-	int balance = 5000;
-	int deficit = -10000;
-	public int getBalance() {
+	double balance = 5000;
+	public double getBalance() {
 		return this.balance; 
 	}
 	//存钱
