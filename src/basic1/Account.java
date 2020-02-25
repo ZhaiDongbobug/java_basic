@@ -20,13 +20,10 @@ public class Account {
 		return true;
 	}
 	//取钱
-	public void withdraw(int money) throws OverdraftException {
-		if(deficit>(balance-money)) {
-			throw new OverdraftException("超出透支额度！！！");
-		}else {
-			balance -= money;
-			System.out.println("取钱成功！");
-		}
+	public void withdraw(int money){
+		if(money>)
+		balance -= money;
+		System.out.println("取钱成功！");			
 	}
 	public static void service(Account ac) throws OverdraftException {
 		System.out.println("请选择你的业务！");
@@ -55,7 +52,12 @@ public class Account {
 		case 3:
 			System.out.println("请输入要取出的金额：");
 			money = sc.nextInt();
-			ac.withdraw(money);
+			try {
+				ac.withdraw(money);
+			}catch(OverdraftException e) {
+				e.printStackTrace();
+			}
+			
 			break;	
 		}
 	}
