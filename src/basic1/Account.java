@@ -25,19 +25,5 @@ public class Account {
 			throw new OverDraftException("余额不足",amt - this.balance);
 		this.balance -= amt;
 	}
-	public static void main(String[] args) {
-		// TODO Auto-generated method stub
-		
-		Account ac = new Account(1000);
-		ac.deposit(1000);
-		System.out.println(ac.getBalance());
-		Scanner sc = new Scanner(System.in);
-		try {
-			ac.withdraw(sc.nextInt());
-		}catch(OverDraftException e) {
-			System.err.println("透支金额为" + e.getDeficit());
-			e.printStackTrace();
-		}
-	}
 
 }
