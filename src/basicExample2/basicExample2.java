@@ -12,7 +12,8 @@ public class basicExample2 {
 		try {
 			File f = new File("d:/xyz/abc/def/lol2.txt");
 			if(f.getParentFile() == null) {
-				f.getParentFile().mkdir();
+				//f.getParentFile().mkdir();
+				f.getParentFile().mkdirs();
 			}
 			byte data[] = {88,89};
 			FileOutputStream fos = new FileOutputStream(f);
