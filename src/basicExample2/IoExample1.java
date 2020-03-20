@@ -4,10 +4,11 @@ import java.io.File;
 
 public class IoExample1 {
 	public static void main() {
-		File f = new File("d:/xyz/abc/def/lol2.txt");
-		if(f.getTotalSpace()>100) {
-			FileInputStream fis = new FileInputStream(f);
-			fis.
-		}
+		long eachsize = 100 * 1024;
+		File srcfile = new File("d:/eclipse.exe");
+		splitFile(srcfile,eachsize);
 	}
+	 public static void splitFile(File f,long l) {
+		 
+	 }
 }
