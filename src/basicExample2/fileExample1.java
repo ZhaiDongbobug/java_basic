@@ -1,7 +1,5 @@
 package basicExample2;
 
-
-
 import java.io.File;
    
 public class fileExample1 {
