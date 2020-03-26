@@ -20,21 +20,13 @@ public class IoExample1 {
 			 throw new RuntimeException("此文件无法分割！");
 		 }
 		 byte[] fileContent = new byte[(int) srcFile.length()];
-		 FileInputStream fis;
-		 try {	
-			fis = new FileInputStream(srcFile);
+		 try {
+			FileInputStream fis = new FileInputStream(srcFile);
 			fis.read(fileContent);
+			fis.close();
 		} catch (IOException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
-		}finally {
-			if(null == fis)
-				try {
-					fis.close();
-				} catch (IOException e) {
-					// TODO Auto-generated catch block
-					e.printStackTrace();
-				}
 		}
 		int fileNumber;
 		
@@ -55,23 +47,15 @@ public class IoExample1 {
 				eachContent = Arrays.
 						copyOfRange(fileContent, eachSize*i, fileContent.length);
 			}
-			FileOutputStream fos;
 			try {
-				fos = new FileOutputStream(eachFile);
-				fos.write(eachContent);			
+				FileOutputStream fos = new FileOutputStream(eachFile);
+				fos.write(eachContent);
+				fos.close();
 				System.out.printf("输出子文件%s，其大小是 %d字节%n", 
 						eachFile.getAbsoluteFile(), eachFile.length());
 			} catch (IOException e) {
 				// TODO Auto-generated catch block
 				e.printStackTrace();
-			}finally {
-				if(null == fos)
-					try {
-						fos.close();
-					} catch (IOException e) {
-						// TODO Auto-generated catch block
-						e.printStackTrace();
-					}
 			}
 		}
 		
