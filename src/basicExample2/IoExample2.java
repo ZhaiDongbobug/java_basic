@@ -12,23 +12,22 @@ public class IoExample2 {
 		murgeFile("d:/","eclipse.exe");
 	}		
 	private static void murgeFile(String folder,String fileName) {
-		try {
-			File destFile = new File(folder,fileName);
-			int index=0;
-			FileOutputStream fos = new FileOutputStream(destFile);
+		File destFile = new File(folder,fileName);
+		try(FileOutputStream fos = new FileOutputStream(destFile)){			
+			int index=0;			
 			while(true) {
 	            File eachFile = new File(folder,fileName + "-" + index++);
 	            if(!eachFile.exists()) {
 	            	break;
 	            }
 	            byte[] eachContent = new byte[(int) eachFile.length()];
-				FileInputStream fis = new FileInputStream(eachFile);
-				fis.read(eachContent);				
-				fos.write(eachContent);
-				fis.close();
-				fos.flush();
+	            try(FileInputStream fis = new FileInputStream(eachFile);){
+	            	fis.read(eachContent);				
+					fos.write(eachContent);
+					fis.close();
+					fos.flush();
+	            }		
 			}
-            fos.close();
 		} catch (IOException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
