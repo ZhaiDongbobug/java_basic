@@ -17,28 +17,16 @@ public class IoExample3 {
 		encodeFile(f1,f2);
 	}
 	public static void encodeFile(File encodingFile, File encodedFile) {
-		try(FileReader fr = new FileReader(encodingFile)){
-			char[] firstFile = new char[(int) encodingFile.length()];
-			fr.read(firstFile);
-			for(char b:firstFile) {
-				System.out.println("加密前的内容："+ b);
-				if(b>='0'&&b<='9') {
-					if(b == '9')
-						b = '0';
-					else
-						b = (char) (b + 1);
-				}
-				if(b>='a'&&b<='z'||b>='A'&&b<='Z') {
-					if(b=='z'||b=='Z')
-						b = (char) (b - 25);
-					else
-						b = (char) (b + 1);
-				}
-				System.out.println("加密后的内容："+ b);
-			}
-			try(FileWriter fw = new FileWriter(encodedFile)){
-				fw.write(firstFile);
-			}
+		try(FileReader fr = new FileReader(encodingFile);
+				FileWriter fw = new FileWriter(encodedFile)){
+			char[] fileContent = new char[(int) encodingFile.length()];
+			fr.read(fileContent);
+			System.out.println("加密前的内容：");
+			System.out.println(new String(fileContent));
+			encode(fileContent);
+			System.out.println("加密后的内容：");
+			System.out.println(new String(fileContent));
+			fw.write(fileContent);
 		} catch (FileNotFoundException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
@@ -46,6 +34,33 @@ public class IoExample3 {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
+	}
+	public static void encode(char[] fileContent) {
+		for(int i=0; i<fileContent.length; i++) {
+			char c = fileContent[i];
+			if(isLetterOrDigit(c)) {
+				switch(c) {
+				case'9':
+					c='0';
+					break;
+				case'z':
+					c='a';
+					break;
+				case'Z':
+					c='A';
+					break;
+				default:
+					c++;
+					break;		
+				}
+			}			
+			fileContent[i] = c;
+		}
+	}
+	public static Boolean isLetterOrDigit(char c) {
+		String letterOrDigital = "0123456789ABCDEFGHIJKLMNOPQRSTU"
+				+ "VWXYZabcdefghijklmnopqrstuvwxyz";
+		return -1 == letterOrDigital.indexOf(c)? false:true;
 	}
 
 }
