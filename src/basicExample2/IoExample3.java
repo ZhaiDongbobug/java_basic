@@ -14,17 +14,17 @@ public class IoExample3 {
 				+ "Zdb190131\\src\\text1\\ReferenceArrayTest.java");
 		File f2 = new File("D:\\eclipseworkspace\\"
 				+ "Zdb190131\\src\\text2\\TwoDimensionTest.java");
-		encodeFile(f1,f2);
+		decodeFile(f1,f2);
 	}
-	public static void encodeFile(File encodingFile, File encodedFile) {
-		try(FileReader fr = new FileReader(encodingFile);
-				FileWriter fw = new FileWriter(encodedFile)){
-			char[] fileContent = new char[(int) encodingFile.length()];
+	public static void decodeFile(File decodingFile, File decodedFile) {
+		try(FileReader fr = new FileReader(decodingFile);
+				FileWriter fw = new FileWriter(decodedFile)){
+			char[] fileContent = new char[(int) decodingFile.length()];
 			fr.read(fileContent);
-			System.out.println("加密前的内容：");
+			System.out.println("解密前的内容：");
 			System.out.println(new String(fileContent));
-			encode(fileContent);
-			System.out.println("加密后的内容：");
+			decode(fileContent);
+			System.out.println("解密后的内容：");
 			System.out.println(new String(fileContent));
 			fw.write(fileContent);
 		} catch (FileNotFoundException e) {
@@ -35,22 +35,22 @@ public class IoExample3 {
 			e.printStackTrace();
 		}
 	}
-	public static void encode(char[] fileContent) {
+	public static void decode(char[] fileContent) {
 		for(int i=0; i<fileContent.length; i++) {
 			char c = fileContent[i];
 			if(isLetterOrDigit(c)) {
 				switch(c) {
-				case'9':
-					c='0';
+				case'0':
+					c='9';
 					break;
-				case'z':
-					c='a';
+				case'a':
+					c='z';
 					break;
-				case'Z':
-					c='A';
+				case'A':
+					c='Z';
 					break;
 				default:
-					c++;
+					c--;
 					break;		
 				}
 			}			
