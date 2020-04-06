@@ -41,8 +41,8 @@ public class dateStreamExample2 {
 			FileOutputStream fos = new FileOutputStream(f);
 			DataOutputStream dos = new DataOutputStream(fos);
 				){
-			dos.writeUTF("31");
-			dos.writeUTF("15");
+			dos.writeInt(31);
+			dos.writeInt(15);
 		} catch (FileNotFoundException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
