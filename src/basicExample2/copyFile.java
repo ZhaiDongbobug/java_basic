@@ -16,7 +16,7 @@ public class copyFile {
 		copyFile("d:\\student","d:\\teacher");
 	}
 
-	private static void copyFile(String srcPath, String destPath) {
+	public static void copyFile(String srcPath, String destPath) {
 		// TODO Auto-generated method stub
 		File srcFile = new File(srcPath);
 		File destFile = new File(destPath);
