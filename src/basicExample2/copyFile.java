@@ -30,8 +30,7 @@ public class copyFile {
 				if(actuallyReaded == -1)
 					break;
 				fos.write(buffer, 0, actuallyReaded);
-				fos.flush();
-				
+				fos.flush();			
 			}
 		} catch (FileNotFoundException e) {
 			// TODO Auto-generated catch block
