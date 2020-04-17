@@ -3,27 +3,24 @@ package numberAndString;
 public class getPrimeNumber {
 
 	public static void main(String[] args) {
-		int g = getNumber(10000000);
-		System.out.println(g);
-	}
-
-	private static int getNumber(int i) {
-		boolean flag=false;
-		int count = 2;
-		for(int num=3;num<=i;num++) {
-			for(int j=2;j<=num/2+1;j++) {
-				if(num%j==0) {
-					flag=true;
-				}
-			}
-			if(flag==false) {
+		int max = 10000*1000;
+		int count=0;
+		for(int i=0;i<=max;i++) {
+			if(isPrime(i)) {
 				count++;
-			}else {
-				flag=false;
 			}
 		}
-		return count;
-		
+		System.out.println(count);
+		System.out.println("一千万以内的质数一共有："+count);
+	}
+
+	private static boolean isPrime(int i) {
+		for(int j=2;j<=Math.sqrt(i);j++) {
+			if(i%j==0) {
+				return false;
+			}
+		}
+		return true;
 	}
 
 }
