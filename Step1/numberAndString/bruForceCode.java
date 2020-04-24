@@ -8,20 +8,25 @@ public class bruForceCode {
 		Boolean flag = false;
 		String code = getString(3);
 		System.out.println("随机取得的密码串：" + code);
-		for (char i = '0'; i < 'z' + 1; i++) {
+		for (int i = '0'; i < 'z' + 1; i++) {
 			if (flag) {
 				break;
 			}				
-			for (char j = '0'; j < 'z' + 1; j++) {
+			for (int j = '0'; j < 'z' + 1; j++) {
 				if (flag) {
 					break;
 				}
-				for (char k = '0'; k < 'z' + 1; k++) {
+				for (int k = '0'; k < 'z' + 1; k++) {	
+					
 					char[] recode = new char[3];
 					recode[0] = (char)i;
 					recode[1] = (char)j;
 					recode[2] = (char)k;
-					String strRecode = Arrays.toString(recode);
+					StringBuffer str = new StringBuffer();
+					str.append(recode);
+					String strRecode = str.toString();
+					//String strRecode = Arrays.toString(recode);
+					//System.out.println(strRecode);
 					if (code.equals(strRecode)) {
 						System.out.println("经多层for循环得到的解码：" + strRecode);
 						flag = true;
