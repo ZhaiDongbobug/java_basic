@@ -8,11 +8,12 @@ public class bruForceCode {
 	static int index = 0;
 	public static void main(String[] args) {
 		code = getString(3);
+		System.out.println("随机得到的密码为：" + code);
 		String recode = "";
 		ArrayList<String> strArry = strpool();
 		searchRecode(recode,strArry);
 	}
-	
+	//创建一个String的池子，里面包含了密码的所有可能
 	private static ArrayList<String> strpool() {
 		ArrayList<String> str = new ArrayList<String>();
 		for (int i = '0'; i < 'z' + 1; i++) {				
@@ -23,6 +24,7 @@ public class bruForceCode {
 					recode[1] = (char)j;
 					recode[2] = (char)k;
 					StringBuffer sbf = new StringBuffer();
+					//这里频繁创建StringBuffer对象
 					sbf.append(recode);
 					String s = sbf.toString();
 					str.add(s);
