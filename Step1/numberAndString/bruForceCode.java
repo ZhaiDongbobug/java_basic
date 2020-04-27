@@ -1,37 +1,41 @@
 package numberAndString;
 
-import java.util.ArrayList;
-
 public class bruForceCode {
+	private static boolean found = false;
+
 	public static void main(String[] args) {
 		String password = randomString(3);
 		System.out.println("密码是：" + password);
-		char[] guessPassword = new char[3];
-		outloop:
-			for(short i='0';i<='z';i++) {
-				for(short j='0';j<='z';j++) {
-					for(short k='0';k<='z';k++) {
-						if(!isLetterOrDigital(i,j,k))
-							continue;
-						guessPassword[0] = (char)i;
-						guessPassword[1] = (char)j;
-						guessPassword[2] = (char)k;
-						String guess = new String(guessPassword);
-						if(guess.equals(password)) {
-							System.out.println("找到了，密码是：" + guess);
-							break outloop;
-					}
+		char[] guessPassword = new char[password.length()];
+		generatePassword(guessPassword, password);
+	}
+
+	private static void generatePassword(char[] guessPassword, String password) {
+		generatePassword(guessPassword, 0, password);
+
+	}
+
+	private static void generatePassword(char[] guessPassword, int index, String password) {
+		if (found)
+			return;
+		for (short i = '0'; i <= 'z'; i++) {
+			char c = (char) i;
+			if (!Character.isLetterOrDigit(c))
+				continue;
+			guessPassword[index] = c;
+			if (index != guessPassword.length - 1) {
+				generatePassword(guessPassword, index + 1, password);
+			} else {
+				String guess = new String(guessPassword);
+				if (guess.equals(password)) {
+					found = true;
+					System.out.println("找到密码了，密码是：" + guess);
+					return;
 				}
 			}
 		}
 	}
-	private static boolean isLetterOrDigital(short i, short j, short k) {
-		if(Character.isLetterOrDigit(i)
-				&&Character.isLetterOrDigit(j)
-				&&Character.isLetterOrDigit(k))
-		return true;
-		return false;
-	}
+
 	private static String randomString(int length) {
 		String pool = "";
 		for (int i = '0'; i < '9' + 1; i++) {
