@@ -4,16 +4,21 @@ public class toUpLetterFirst {
 
 	public static void main(String[] args) {
 		String sentence = "let there be light";
-		String[] word = sentence.split(" ");
-		for(String w:word) {
-			char m = Character.toUpperCase(w.charAt(0));
-			w.replace(w.charAt(0), m);
-			w = w + " ";
+		System.out.println(sentence);
+		String[] words = sentence.split(" ");
+		for(int i=0;i<words.length;i++) {
+			String word = words[i];
+			char upperCaseFirstWord = Character.toUpperCase(word.charAt(0));
+			String rest = word.substring(1);
+			String capitalizedWord = upperCaseFirstWord + rest;
+			words[i] = capitalizedWord;
 		}
-		String str = new String(word);
-		System.out.println(word.toString());
-		
-
+		String result = "";
+		for(String word:words) {
+			result+=word+' ';
+		}
+		result = result.trim();
+		System.out.println(result);
 	}
 
 }
