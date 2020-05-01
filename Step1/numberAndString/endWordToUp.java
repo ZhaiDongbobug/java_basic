@@ -12,5 +12,4 @@ public class endWordToUp {
 		String result = rest + c;
 		System.out.println(result);
 	}
-
 }
