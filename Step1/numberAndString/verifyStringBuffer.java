@@ -3,20 +3,24 @@ package numberAndString;
 public class verifyStringBuffer {
 
 	public static void main(String[] args) {
+		int total = 10000;
+		String s = randomString(10);
 		String str = "";
-		StringBuffer sbf = new StringBuffer();	
-		int currentTime = (int) System.currentTimeMillis();
-		for(int i=0;i<10000;i++) {
-			str+=randomString(10);
+		StringBuffer sbf = new StringBuffer();
+		long start = System.currentTimeMillis();
+		for (int i = 0; i < total; i++) {
+			str += s;
 		}
-		int strEnd = (int) System.currentTimeMillis();
-		System.out.printf("使用字符串连接的方式，连接10000次，耗时：%d毫秒",(strEnd-currentTime));
+		long end = System.currentTimeMillis();
+		System.out.printf("使用字符串连接的方式，连接%d次，耗时：%d毫秒", total, (end - start));
 		System.out.println();
-		for(int i=0;i<10000;i++) {
-			sbf.append(randomString(10));
+		start = System.currentTimeMillis();
+		for (int i = 0; i < total; i++) {
+			sbf.append(s);
 		}
-		int sbfEnd = (int) System.currentTimeMillis();
-		System.out.printf("使用StringBuffer的方式，连接1000000次，耗时%d毫秒",(sbfEnd-strEnd));
+		end = System.currentTimeMillis();
+		total *= 100;
+		System.out.printf("使用StringBuffer的方式，连接%d次，耗时%d毫秒", total, (end - start));
 	}
 
 	private static String randomString(int length) {
