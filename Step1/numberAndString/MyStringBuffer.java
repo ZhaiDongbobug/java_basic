@@ -14,7 +14,7 @@ public class MyStringBuffer implements IStringBuffer{
 		if(null == str) {
 			return;
 		}	
-		if(capacity<str.length()) {
+		while(capacity<str.length()) {
 			capacity = value.length*2;
 			value = new char[capacity];
 		}
@@ -23,54 +23,55 @@ public class MyStringBuffer implements IStringBuffer{
 		length = str.length();
 	}
 	public void append(String str) {
-		if(null != str) {
-			char[] newValue = str.toCharArray();
-			if(capacity-length < newValue.length) {
-				capacity += newValue.length*2;
-			}
-			System.arraycopy(newValue, 0, value, 0, newValue.length);
-			length = value.length;
-		}	
+		insert(length,str);	
 	}
 	@Override
 	public void append(char c) {
-		// TODO Auto-generated method stub
+		append(String.valueOf(c));
 		
 	}
 	@Override
 	public void insert(int pos, char b) {
-		// TODO Auto-generated method stub
-		
+		insert(pos,String.valueOf(b));
 	}
 	@Override
 	public void insert(int pos, String b) {
 		if(pos<0)
 			return;
+		if(pos>length)//这种情况插入，对StringBuffer类没有意义
+			return;
 		if(b == null)
 			return;
-		if(b.length()>(capacity-length)) {
-			capacity += b.length()*2;
-			char[] value = new char[capacity];
+		while(b.length()+length>capacity) {
+			capacity = (int) ((b.length()+length)*1.5f);
+			char[] newValue = new char[capacity];
+			System.arraycopy(value, 0, newValue, 0, length);
+			value = newValue;
 		}
-		if(pos<length) {
-			for(int i=0;i<length-pos;i++) {
-				char temp = value[length-1-i];
-				value[length-1-i] = value[b.length()+length-1-i];
-				value[b.length()+length-1-i] = temp;
-			}
-		}
-		System.arraycopy(b.toCharArray(),0, value, pos, b.toCharArray().length);
-		length += b.length(); 
+		char[] cs = b.toCharArray();
+		//先把已经存在的数据后移
+		System.arraycopy(value, pos, value, pos+cs.length, length-pos);
+		System.arraycopy(cs, 0, value, pos, cs.length);
+		length += cs.length;
 	}
 	@Override
 	public void delete(int start) {
-		// TODO Auto-generated method stub
-		
+		delete(start,length);
 	}
 	@Override
 	public void delete(int start, int end) {
-		// TODO Auto-generated method stub
-		
+		if(start<0)
+			return;
+		if(start>length)
+			return;
+		if(end<0)
+			return;
+		if(end>length)
+			return;
+		if(start>end)
+			return;
+		System.arraycopy(value, end, value, start, length-end);
+		length -= end-start;
 	}
 	@Override
 	public void reverse() {
@@ -82,8 +83,7 @@ public class MyStringBuffer implements IStringBuffer{
 	}
 	@Override
 	public int length() {
-		// TODO Auto-generated method stub
-		return 0;
+		return length;
 	}
 	
 	public String toString() {
@@ -93,8 +93,29 @@ public class MyStringBuffer implements IStringBuffer{
 	}
 	
 	public static void main(String[] args) {
-		MyStringBuffer sb = new MyStringBuffer("there light");
-		sb.insert(12, "000");
-		System.out.println(sb);
+		 MyStringBuffer sb = new MyStringBuffer("there light");
+	        System.out.println(sb);
+	        sb.insert(0, "let ");
+	        System.out.println(sb);
+	  
+	        sb.insert(10, "be ");
+	        System.out.println(sb);
+	        sb.insert(0, "God Say:");
+	        System.out.println(sb);
+	        sb.append("!");
+	        System.out.println(sb);
+	        sb.append('?');
+	        System.out.println(sb);
+	        sb.reverse();
+	        System.out.println(sb);
+	        
+	        sb.reverse();
+	        System.out.println(sb);
+	         
+	        sb.delete(0,4);
+	        System.out.println(sb);
+	        sb.delete(4);
+	        System.out.println(sb);
+	 
 	}
 }
