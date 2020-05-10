@@ -15,28 +15,31 @@ public class NewStringBuffer implements IStringBuffer{
 		System.out.println(nsbf);
 		nsbf.append('8');
 		System.out.println(nsbf);
-		System.out.println(nsbf.length);
+		System.out.println(nsbf.value.size());
 		nsbf.insert(2, ",.,");
 		System.out.println(nsbf);
-		System.out.println(nsbf.length);
+		System.out.println(nsbf.value.size());
 		nsbf.delete(5);
 		System.out.println(nsbf);		
 	}
-	int length = 0;
-	ArrayList<Character> arl = new ArrayList<Character>();
+	ArrayList value;
 	public NewStringBuffer() {
-
+		value = new ArrayList();
 	}
 	public NewStringBuffer(String str) {		
-		for(int i=0;i<str.length();i++) {
-			arl.add(0,str.charAt(i));
+		this();
+		if(str == null)
+			return;
+		char[] cs = str.toCharArray();
+		for(int i=0;i<cs.length;i++) {
+			char c = cs[i];
+			value.add(c);
 		}
-		length = arl.size();
 	}
 
 	@Override
 	public void append(String str) {
-		insert(length,str);
+		insert(value.size(),str);
 	}
 
 	@Override
@@ -53,61 +56,57 @@ public class NewStringBuffer implements IStringBuffer{
 	public void insert(int pos, String str) {
 		if(pos<0)
 			return;
-		if(pos>length)
+		if(pos>value.size())
 			return;
 		if(str == null)
 			return;
-		for(int i=0;i<str.length();i++) {
-			arl.add(pos+i, str.charAt(i));	
+		char[] cs = str.toCharArray();
+		for(int i=0;i<cs.length;i++) {
+			char c = cs[i];
+			value.add(pos+i, c);	
 		}
-		length = arl.size();
 	}
 
 	@Override
 	public void delete(int start) {
-		delete(start,length);
+		delete(start,value.size());
 	}
 
 	@Override
 	public void delete(int start, int end) {
 		if(start<0)
 			return;
-		if(start>length)
+		if(start>value.size())
 			return;
 		if(end<0)
 			return;
-		if(end>length)
+		if(end>value.size())
 			return;
-		if(start>end)
+		if(start>=end)
 			return;
-		int count = end-start;
-		while(count>0) {		
-			arl.remove(start);
-			count--;
+		for(int i=0;i<end-start;i++) {		
+			value.remove(start);
 		}
-		length -= end-start; 
 	}
-
 	@Override
 	public void reverse() {
-		if(arl == null)
-			return;
-		ArrayList<Character> arl2 = new ArrayList<Character>();
-		for(int i=arl.size()-1;i>=0;i--) {
-			arl2.add(length-i-1, arl.get(i));
+		int length = value.size();
+		for(int i=0;i<length/2;i++) {
+			char temp = (char) value.get(length-i-1);
+			value.set(length-i-1, value.get(i));
+			value.set(i, temp);
 		}
-		arl = arl2;
 	}
 	@Override
 	public int length() {
-		return length;
+		return value.size();
 	}
 
 	public String toString() {
-		String result = "";
-		for(int i=0;i<length;i++) {
-			result += Character.toString((char)arl.get(i));
+		char[] cs = new char[value.size()];
+		for(int i=0;i<value.size();i++) {
+			cs[i] = (char) value.get(i);
 		}
-		return result;
+		return new String(cs);
 	}
 }
