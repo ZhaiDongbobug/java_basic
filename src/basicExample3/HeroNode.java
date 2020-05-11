@@ -5,26 +5,36 @@ import java.util.List;
 
 public class HeroNode {
 
-	public static void main(String[] args) {
-		Hero[] heros = new Hero[10];
-		HeroNode roots = new HeroNode();
-		for(int i=0;i<10;i++) {
-			heros[i] = new Hero("hero "+i);
-			heros[i].setHp((int) (Math.random()*1000));
-			roots.add(heros[i]);
-		}
-		System.out.println(roots.values());
-	}
-
 	public HeroNode leftNode;
 	public HeroNode rightNode;
 	public Hero value;
+	public static void main(String[] args) {
+		List<Hero> hs = new ArrayList<>();
+		for(int i=0;i<10;i++) {
+			Hero hero = new Hero();
+			hero.name = "hero "+i;
+			hero.hp = (float) (Math.random()*900+100);
+			hs.add(hero);
+		}
+		System.out.println("初始化10个Hero");
+		System.out.println(hs);
+		
+		
+		HeroNode heroTree = new HeroNode();
+		for(Hero hero:hs) {
+			heroTree.add(hero);
+		}
+		System.out.println("根据血量倒排序后的Hero");
+		System.out.println(heroTree.values());
+	}
+
+	
 	
 	public void add(Hero v) {
 		if(null == value)
 			value = v;
 		else {
-			if(v.getHp() > value.getHp()) {
+			if(v.hp > value.hp) {
 				if(null == leftNode)
 					leftNode = new HeroNode();
 				leftNode.add(v);

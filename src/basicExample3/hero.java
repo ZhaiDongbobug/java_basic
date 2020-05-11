@@ -2,18 +2,16 @@
 package basicExample3;
 
 public class Hero {
-			private String name;
-			private int hp;
+			public String name;
+			public float hp;
+			public Hero() {
+				
+			}
 			public Hero(String name) {
+				this();
 				this.name = name;
 			}
 			public String toString() {
-				return this.name;
-			}
-			public int getHp() {
-				return hp;
-			}
-			public void setHp(int hp) {
-				this.hp = hp;
+				return String.format("[name:%s hp:%.0f]%n", name,hp);
 			}
 }
