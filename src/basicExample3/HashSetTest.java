@@ -1,7 +1,6 @@
 package basicExample3;
 
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
@@ -14,6 +13,12 @@ public class HashSetTest {
 		for(int i=0;i<total;i++) {
 			strArry[i] = randomString(2);
 		}
+		for(int i=0;i<total;i++) {
+			System.out.printf(strArry[i] + " ");
+			if(i%20 == 19) {
+				System.out.println();
+			}
+		}
 		Set<String> set = new HashSet<>();
 		List<String> list = new ArrayList<>();
 		for(String str:strArry) {
@@ -23,7 +28,9 @@ public class HashSetTest {
 			set.add(str);
 		}
 		System.out.printf("总共有%d种重复的字符串%n",list.size());
-		System.out.println(list);	
+		for(String str:list) {	
+			System.out.printf(str + " ");
+		}
 	}
 
 	private static String randomString(int length) {
