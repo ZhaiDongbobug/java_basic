@@ -4,12 +4,10 @@ public class HashCodeTest {
 
 	public static void main(String[] args) {
 		int length;
-		String[] strArry = new String[100];
-		for (int i = 0; i < strArry.length; i++) {
+		String str;
+		for (int i = 0; i < 100; i++) {
 			length = (int) (Math.random() * 8 + 2);
-			strArry[i] = randomString(length);
-		}
-		for (String str : strArry) {
+			str = randomString(length);
 			int hash = hashcode(str);
 			System.out.println(hash);
 		}
@@ -43,12 +41,14 @@ public class HashCodeTest {
 		char[] ch = str.toCharArray();
 		int hash = 0;
 		for (char c : ch) {
-			hash += Math.abs(c);
+			hash += c;
 		}
 		hash *= 23;
-		if (hash > 1999) {
-			return hash % 2000;
-		}
+		//取绝对值
+		hash = hash<0 ? 0-hash:hash;
+		//落在0-1999之间
+		hash = hash % 2000;
+		
 		return hash;
 	}
 
