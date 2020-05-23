@@ -7,7 +7,7 @@ public class CompareArrayListAndHashSet {
 
 	public static void main(String[] args) {
 		Set<Integer> set = new HashSet<>();
-		for (int i = 0; i < 50; i++) {
+		while (set.size() < 50) {
 			Integer number = (int) (Math.random() * 999);
 			set.add(number);
 		}
