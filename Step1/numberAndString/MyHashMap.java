@@ -4,9 +4,10 @@ import java.util.LinkedList;
 import java.util.List;
 import java.util.Scanner;
 
-public class MyHashMap implements IHashMap{
+public class MyHashMap implements IHashMap {
 
-	Object[] objArry = new Object[2000]; 
+	LinkedList<Entry>[] values = new LinkedList[2000];
+
 	public static void main(String[] args) {
 		System.out.println("请输入键值：");
 		Scanner scanner = new Scanner(System.in);
@@ -22,29 +23,51 @@ public class MyHashMap implements IHashMap{
 
 	@Override
 	public void put(String key, Object object) {
+		// 拿到hashCode
 		int hashCode = hashcode(key);
-		Entry entry = new Entry(key,object);
-		if(objArry[hashCode] == null) {
-			List<Entry> list = new LinkedList<>();
+		// 找到对应的LinkedList
+		LinkedList<Entry> list = values[hashCode];
+		// 如果LinkedList是null,则创建一个LinkedList
+		if (list == null) {
+			list = new LinkedList<>();
+			values[hashCode] = list;
+		}
+
+		boolean found = false;
+		for (Entry entry : list) {
+			// 如果已经有了，则替换掉
+			if (key.equals(entry.key)) {
+				entry.value = object;
+				found = true;
+				break;
+			}
+		}
+
+		// 如果没有已经存在的键值对，则创建新的键值对
+		if (!found) {
+			Entry entry = new Entry(key, object);
 			list.add(entry);
-			objArry[hashCode] = list;
-		}else {
-			List<Entry> list = (List<Entry>) objArry[hashCode];
-			list.add(entry);
-		}	
+		}
 	}
 
 	@Override
 	public Object get(String key) {
+		// 获取hashCode
 		int hashCode = hashcode(key);
-		List<Entry> list = (List<Entry>) objArry[hashCode];
-		for(int i=0;i<list.size();i++) {
-			Entry entry = (Entry) list.get(i);
-			if(entry.key.equals(key)) {
-				return entry.value;
+		// 找到hashCode对应的LinkedList
+		List<Entry> list = values[hashCode];
+		if (null == list) {
+			return null;
+		}
+		Object result = null;
+		// 挨个比较每个键值对的key,找到匹配的，返回其value
+		for (Entry entry : list) {
+			if (entry.key.equals(key)) {
+				result = entry.value;
+				break;
 			}
 		}
-		return null;
+		return result;
 	}
 
 	public static int hashcode(String str) {
@@ -57,11 +80,11 @@ public class MyHashMap implements IHashMap{
 			hash += c;
 		}
 		hash *= 23;
-		//取绝对值
-		hash = hash<0 ? 0-hash:hash;
-		//落在0-1999之间
+		// 取绝对值
+		hash = hash < 0 ? 0 - hash : hash;
+		// 落在0-1999之间
 		hash = hash % 2000;
-		
+
 		return hash;
 	}
 }
