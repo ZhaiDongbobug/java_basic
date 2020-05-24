@@ -1,4 +1,4 @@
-package numberAndString;
+package basicExample3;
 
 public class Entry {
 

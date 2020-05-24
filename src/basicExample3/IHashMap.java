@@ -1,4 +1,4 @@
-package numberAndString;
+package basicExample3;
 
 public interface IHashMap {
 	public void put(String key,Object object);

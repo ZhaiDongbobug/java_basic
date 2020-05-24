@@ -1,4 +1,4 @@
-package numberAndString;
+package basicExample3;
 
 import java.util.LinkedList;
 import java.util.List;
