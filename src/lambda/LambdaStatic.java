@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 import java.util.Random;
+import lambda.Hero;
 
 public class LambdaStatic {
 
@@ -22,7 +23,7 @@ public class LambdaStatic {
 		// 到底按照哪种属性进行比较，Collections也不知道，不确定，所以没法排
 		// Collections.sort(heros);
 
-		Collections.sort(heros, LambdaStatic::compare);
+		Collections.sort(heros, Hero::compareHero);
 		System.out.println("按照血量排序后的集合：");
 		System.out.println(heros);
 	}

@@ -25,4 +25,11 @@ public class Hero {
         this.hp = hp;
         this.damage = damage;
     }
+    public int compareHero(Hero h2) {
+		// 按照hp进行排序
+		if (this.hp >= h2.hp)
+			return 1; // 正数表示h1比h2要大
+		else
+			return -1;
+	}
 }
