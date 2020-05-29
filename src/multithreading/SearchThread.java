@@ -4,7 +4,7 @@ import java.io.File;
 import java.io.FileReader;
 import java.io.IOException;
 
-public class SearchThread extends Thread {
+public class SearchThread implements Runnable {
 
 	private File file;
 	private String search;

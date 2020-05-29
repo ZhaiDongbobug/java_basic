@@ -18,7 +18,7 @@ public class SearchFileByThread {
 			}
 			if (f.isFile() && f.getName().toLowerCase().endsWith(".java")) {
 				SearchThread find = new SearchThread(f, search);
-				find.start();
+				new Thread(find).start();
 			}
 		}
 	}
