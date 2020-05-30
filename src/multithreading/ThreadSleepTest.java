@@ -6,26 +6,27 @@ public class ThreadSleepTest {
 
 		Thread t1 = new Thread() {
 			public void run() {
-				int hadAttack = 0;
+				int totalTime = 3;
 				while (true) {
-					try {
-						if (hadAttack == 3) {
-							hadAttack = 0;
-							System.out.println("开始为时5秒的充能");
-							Thread.sleep(5000);
+					for (int i = 0; i < totalTime; i++) {
+						System.out.printf("波动拳第%d发%n", i);
+						try {
+							Thread.sleep(1000);
+						} catch (InterruptedException e) {
+							// TODO Auto-generated catch block
+							e.printStackTrace();
 						}
-						hadAttack++;
-						System.out.printf("波动拳第%d发%n", hadAttack);
-						Thread.sleep(1000);
+					}
+					System.out.println("开始为时5秒的充能");
+					try {
+						Thread.sleep(5000);
 					} catch (InterruptedException e) {
 						// TODO Auto-generated catch block
 						e.printStackTrace();
 					}
-
 				}
 			}
 		};
 		t1.start();
-
 	}
 }
