@@ -1,0 +1,31 @@
+package multithreading;
+
+public class ThreadSleepTest {
+
+	public static void main(String[] args) {
+
+		Thread t1 = new Thread() {
+			public void run() {
+				int hadAttack = 0;
+				while (true) {
+					try {
+						if (hadAttack == 3) {
+							hadAttack = 0;
+							System.out.println("开始为时5秒的充能");
+							Thread.sleep(5000);
+						}
+						hadAttack++;
+						System.out.printf("波动拳第%d发%n", hadAttack);
+						Thread.sleep(1000);
+					} catch (InterruptedException e) {
+						// TODO Auto-generated catch block
+						e.printStackTrace();
+					}
+
+				}
+			}
+		};
+		t1.start();
+
+	}
+}
