@@ -8,7 +8,7 @@ public class Hero {
     public int damage;
   
     public Hero() {
-  
+    	this.name = null;
     }
   
     public Hero(String name) {
