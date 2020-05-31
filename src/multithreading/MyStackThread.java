@@ -1,19 +1,20 @@
 package multithreading;
 
+import java.util.Collections;
 import java.util.LinkedList;
 
 import lambda.Hero;
 
 public class MyStackThread implements Stack{
 
-	LinkedList<Hero> heros = new LinkedList<Hero>();
+	LinkedList<Hero> heros = (LinkedList<Hero>) Collections.synchronizedList(new LinkedList<Hero>());
     
-    public synchronized void push(Hero h) {
+    public void push(Hero h) {
         heros.addLast(h);
     }
    
     @Override
-    public synchronized Hero pull() {
+    public Hero pull() {
         return heros.removeLast();
     }
    
