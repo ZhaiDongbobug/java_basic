@@ -8,12 +8,14 @@ public class Hero {
 	public int damage;
 
 	public Hero() {
-		this.name = null;
+		
 	}
 
 	public Hero(String name) {
 
 		this.name = name;
+		hp = 1000;
+		damage = 2;
 	}
 
 	public String toString() {
@@ -36,7 +38,7 @@ public class Hero {
 
 	//
 	public synchronized void recover() {
-		if (hp == 1000) {
+		while (hp >= 1000) {
 			try {
 				// 让占有this的减血线程，暂时释放对this的占有，并等待
 				this.wait();
@@ -47,11 +49,11 @@ public class Hero {
 		}
 		hp = hp + 1;
 		System.out.printf("%s 回血1点,增加血后，%s的血量是%.0f%n", name, name, hp);
-		this.notify();
+		this.notifyAll();
 	}
 
 	public synchronized void hurt() {
-		if (hp == 1) {
+		while (hp <= 1) {
 			try {
 				this.wait();
 			} catch (InterruptedException e) {
@@ -62,7 +64,7 @@ public class Hero {
 		hp = hp - 1;
 		System.out.printf("%s 减血1点,减少血后，%s的血量是%.0f%n", name, name, hp);
 		// 通知那些等待在this对象上的线程，可以醒过来了
-		this.notify();
+		this.notifyAll();
 	}
 
 }
