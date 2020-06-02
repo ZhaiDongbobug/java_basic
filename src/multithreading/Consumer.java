@@ -1,24 +1,24 @@
 package multithreading;
 
-public class Consumer {
+public class Consumer extends Thread{
 
-	NewMyStack stack = new NewMyStack();
-	public Consumer(NewMyStack stack) {
+	NewMyStack<Character> stack;
+	public Consumer(NewMyStack<Character> stack,String name) {
+		super(name);
 		this.stack = stack;
 	}
-	public synchronized Character pullCharacter() {
-		while(stack.size() <= 0) {
+	public void run() {
+		while(true) {
+			char c = stack.peek();
+			System.out.println(this.getName()+"弹出："+c);
+			stack.pull();
 			try {
-				this.wait();
+				Thread.sleep(100);
 			} catch (InterruptedException e) {
 				// TODO Auto-generated catch block
 				e.printStackTrace();
-			}			
+			}
 		}
-		char character = (char) stack.peek();
-		stack.pull();
-		this.notifyAll();
-		return character;
 	}
 }
 	

@@ -1,32 +1,40 @@
 package multithreading;
 
-import java.util.Collections;
+
 import java.util.LinkedList;
-import java.util.List;
 
 
-public class NewMyStack implements NewStack{
+public class NewMyStack<T>{
 
-	List<Character> list = (List<Character>) Collections.
-	synchronizedList(new LinkedList<Character>());
-	
-	public void push(Character h) {
-		
-		list.add(h);
-		
+	LinkedList<T> list = new LinkedList<T>();	
+	public synchronized void push(T t) {
+		while(list.size()>=200) {
+			try {
+				this.wait();
+			} catch (InterruptedException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+		}
+		this.notifyAll();
+		list.addLast(t);		
 	}
 
-	@Override
-	public Character pull() {
-		return list.remove(list.size() - 1);	
+	public synchronized T pull() {
+		while(list.isEmpty()) {
+			try {
+				this.wait();
+			} catch (InterruptedException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+		}		
+		this.notifyAll();
+		return list.removeLast();	
 	}
 
-	@Override
-	public Character peek() {	
-		return list.get(list.size() - 1);
+	public T peek() {	
+		return list.getLast();
 	}
 
-	public int size() {
-		return list.size();
-	}
 }

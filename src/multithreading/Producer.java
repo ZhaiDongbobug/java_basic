@@ -1,35 +1,31 @@
 package multithreading;
 
-public class Producer{
-
-	char[] pool;
-	NewMyStack stack;
-	public Producer(NewMyStack stack) {		
-		int index = 0;
-		pool = new char[26];
-		for(short i='A';i<'Z';i++) {
-			char c = (char) i;
-			pool[index] = c;
-			index++;
-		}
+public class Producer extends Thread{
+	
+	private NewMyStack<Character> stack;
+	public Producer(NewMyStack<Character> stack,String name) {
+		super(name);
 		this.stack = stack;
 	}
 	
-	public synchronized char randomUpCaseToStack() {		
-		while(stack.size() == 200) {
+
+	public void run() {
+		while(true) {
+			char c = randomUpCase();
+			System.out.println(this.getName()+"压入："+c);
+			stack.push(c);
 			try {
-				this.wait();
+				Thread.sleep(1000);
 			} catch (InterruptedException e) {
 				// TODO Auto-generated catch block
 				e.printStackTrace();
 			}
 		}
-		char randomUpCase = pool[(int) (Math.random()*25)];
-		stack.push(randomUpCase);
-		this.notifyAll();
-		return randomUpCase;		
 	}
 	
+	public char randomUpCase() {
+		return (char) (Math.random()*('Z'+1-'A')+'A');
+	}
 	
 	
 }
