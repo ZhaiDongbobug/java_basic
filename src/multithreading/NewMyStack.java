@@ -33,10 +33,15 @@ public class NewMyStack<T>{
 			
 		} catch (InterruptedException e1) {
 			e1.printStackTrace();
-		}			
+		} finally {			
+			if(locked) {
+				lock.unlock();
+			}
+		}
 	}
 
 	public T pull() {
+		T t = null;
 		try {
 			locked = lock.tryLock(10, TimeUnit.SECONDS);
 			if(locked) {
@@ -49,15 +54,21 @@ public class NewMyStack<T>{
 					}
 				}
 				condition.signalAll();
+				t = list.removeLast();
 			}
 			
 		} catch (InterruptedException e2) {
 			e2.printStackTrace();
+		} finally {			
+			if(locked) {
+				lock.unlock();
+			}
 		}
-		return list.removeLast();			
+		return t;			
 	}
 
 	public T peek() {
+		T t = null;
 		try {
 			locked = lock.tryLock(10, TimeUnit.SECONDS);
 			if(locked) {
@@ -70,12 +81,17 @@ public class NewMyStack<T>{
 					}
 				}
 				condition.signalAll();
+				t = list.getLast();
 			}
 			
 		} catch (InterruptedException e2) {
 			e2.printStackTrace();
+		} finally {			
+			if(locked) {
+				lock.unlock();
+			}
 		}
-		return list.getLast();
+		return t;
 	}
 
 }

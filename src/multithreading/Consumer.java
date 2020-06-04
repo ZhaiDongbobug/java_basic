@@ -9,9 +9,8 @@ public class Consumer extends Thread{
 	}
 	public void run() {
 		while(true) {
-			char c = stack.peek();
+			char c = stack.pull();		
 			System.out.println(this.getName()+"弹出："+c);
-			stack.pull();
 			try {
 				Thread.sleep(1000);
 			} catch (InterruptedException e) {

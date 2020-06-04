@@ -12,10 +12,10 @@ public class Producer extends Thread{
 	public void run() {
 		while(true) {
 			char c = randomUpCase();
-			System.out.println(this.getName()+"压入："+c);
 			stack.push(c);
+			System.out.println(this.getName()+"压入："+c);
 			try {
-				Thread.sleep(1000);
+				Thread.sleep(1200);
 			} catch (InterruptedException e) {
 				// TODO Auto-generated catch block
 				e.printStackTrace();
