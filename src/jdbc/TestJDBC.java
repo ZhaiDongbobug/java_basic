@@ -10,16 +10,16 @@ import java.sql.Statement;
 public class TestJDBC {
 
 	public static void main(String[] args) {
-		long startTime = System.currentTimeMillis();
-		String sql = "insert into hero values(null," + "'英雄'" + "," + 161.0f + "," + 500 + ")";
-		executeByStatement(sql);
-		long endTime = System.currentTimeMillis();
-		System.out.printf("使用Statement花费时间%d毫秒", endTime - startTime);
-		startTime = System.currentTimeMillis();
-		executeByPreparedStatement(sql);
-		endTime = System.currentTimeMillis();
-		System.out.printf("使用PrepareStatement花费时间%d毫秒", endTime - startTime);
-		// list(0,5);
+//		long startTime = System.currentTimeMillis();
+//		String sql = "insert into hero values(null," + "'英雄'" + "," + 161.0f + "," + 500 + ")";
+//		executeByStatement(sql);
+//		long endTime = System.currentTimeMillis();
+//		System.out.printf("使用Statement花费时间%d毫秒", endTime - startTime);
+//		startTime = System.currentTimeMillis();
+//		executeByPreparedStatement(sql);
+//		endTime = System.currentTimeMillis();
+//		System.out.printf("使用PrepareStatement花费时间%d毫秒", endTime - startTime);
+		list(0,5);
 	}
 
 	public static void executeByStatement(String sql) {
@@ -90,13 +90,24 @@ public class TestJDBC {
 			String sql = "select * from hero limit " + start + "," + count;
 
 			// 执行查询语句，并把结果集返回给ResultSet
-			ResultSet rs = s.executeQuery(sql);
-			while (rs.next()) {
-				int id = rs.getInt("id");// 可以使用字段名
-				String name = rs.getString(2);// 也可以使用字段的顺序
-				float hp = rs.getFloat("hp");
-				int damage = rs.getInt(4);
-				System.out.printf("%d\t%s\t%f\t%d%n", id, name, hp, damage);
+//			ResultSet rs = s.executeQuery(sql);
+//			while (rs.next()) {
+//				int id = rs.getInt("id");// 可以使用字段名
+//				String name = rs.getString(2);// 也可以使用字段的顺序
+//				float hp = rs.getFloat("hp");
+//				int damage = rs.getInt(4);
+//				System.out.printf("%d\t%s\t%f\t%d%n", id, name, hp, damage);
+//			}
+			boolean isQuery = s.execute(sql);
+			if(isQuery) {
+				ResultSet rs = s.getResultSet();
+				while(rs.next()) {
+					int id = rs.getInt("id");
+					String name = rs.getString(2);
+					float hp = rs.getFloat(3);
+					int damage = rs.getInt(4);
+					System.out.printf("%d\t%s\t%f\t%d%n",id,name,hp,damage);
+				}
 			}
 			// 不一定要在这里关闭ReultSet，因为Statement关闭的时候，会自动关闭ResultSet
 			// rs.close();
