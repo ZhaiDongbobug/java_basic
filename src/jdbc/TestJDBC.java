@@ -19,7 +19,8 @@ public class TestJDBC {
 //		executeByPreparedStatement(sql);
 //		endTime = System.currentTimeMillis();
 //		System.out.printf("使用PrepareStatement花费时间%d毫秒", endTime - startTime);
-		list(0,5);
+		//list(0,5);
+		deleteForwardDate();
 	}
 
 	public static void executeByStatement(String sql) {
@@ -117,5 +118,51 @@ public class TestJDBC {
 			e.printStackTrace();
 		}
 
+	}
+
+	public static void deleteForwardDate() {
+		String sql1 = "insert into hero values(null,?,?,?)";
+		try {
+			// Class.forName是把这个类加载到JVM中，
+			// 加载的时候，就会执行其中的静态初始化块，
+			// 完成驱动的初始化的相关工作。
+			Class.forName("com.mysql.jdbc.Driver");
+			System.out.println("数据库驱动加载成功！");
+		} catch (ClassNotFoundException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+
+		try (
+				// 建立与数据库的Connection连接
+				Connection c = DriverManager
+						.getConnection("jdbc:mysql://127.0.0.1:3306/how2java?characterEncoding=UTF-8", "root", "admin");
+				// Statement是用于执行SQL语句的，比如增加，删除
+				PreparedStatement ps = c.prepareStatement(sql1);) {
+			ps.setString(1, "盖伦");
+			ps.setFloat(2, 616);
+			ps.setInt(3, 100);
+			int id = -1;
+			ps.execute();
+			ResultSet rs1 = ps.getGeneratedKeys();
+			if (rs1.next()) {
+				id = rs1.getInt(1);
+				System.out.println("刚插入的数据id是：" + id);
+			}
+			for (int i = id - 1; i > 0; i--) {
+				int targetId = i;
+				ResultSet rs2 = ps.executeQuery("select id from hero where id = " + targetId);
+				if (rs2.next()) {
+					System.out.println("id=" + targetId + "的数据存在，删除该数据");
+					String deleteSql = "delete from hero where id = " + targetId;
+					ps.execute(deleteSql);
+					break;
+				}
+			}
+
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
 	}
 }
