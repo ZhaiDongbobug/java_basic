@@ -23,6 +23,7 @@ public class TestJDBC {
 		list(0,10);
 		//deleteForwardDate();
 		innodbDelete();
+		list(0,10);
 	}
 	public static void innodbDelete() {
 		try {
@@ -42,39 +43,34 @@ public class TestJDBC {
 						.getConnection("jdbc:mysql://127.0.0.1:3306/how2java?characterEncoding=UTF-8", "root", "admin");
 				// Statement是用于执行SQL语句的，比如增加，删除
 				//PreparedStatement ps = c.prepareStatement(sql);
-				Statement s = c.createStatement();
+				Statement s1 = c.createStatement();
+				Statement s2 = c.createStatement();
+				Scanner scanner = new Scanner(System.in);
 				) {
-			String sqlInnodb = "alter table hero ENGINE = innodb";
-			s.execute(sqlInnodb);
-			String lookSql = "show table status from how2java";
-			ResultSet rs1 = s.executeQuery(lookSql);
-			String sql2 = "select id from hero limit 0,10";
-			ResultSet rs2 = s.executeQuery(sql2);
-			while(rs2.next()) {
-				System.out.printf("试图删除id=%d 的数据%n",rs2.getInt(1));
-			}
 			c.setAutoCommit(false);
-			String sql3 = "delete form hero where id in"
-					+ "(select top 10 id form hero)";
-			Scanner scanner = new Scanner(System.in);
+			
+			String sql1 = "select id from hero limit 0,10";
+
+			ResultSet rs1 = s1.executeQuery(sql1);
+			while(rs1.next()) {
+				int i = rs1.getInt(1);
+				System.out.println("试图删除id="+i+" 的数据");
+				String sql2 = "delete from hero where id = "+i;
+				s2.execute(sql2);
+			}
+			
 			while(true) {
 				System.out.println("是否要删除数据（Y/N）");
-				
-				if(scanner.next().equals("Y")){
-					s.execute(sql3);
-					scanner.close();
+				String str = scanner.next();
+				if(str.equals("Y")){
+					c.commit();
+					System.out.println("提交删除");
 					break;
-				}else if(scanner.next().equals("N")) {
-					scanner.close();
+				}else if(str.equals("N")) {	
+					System.out.println("放弃删除");
 					break;
-				}else {
-					continue;
 				}
 			}
-			c.commit();
-			
-			
-
 		} catch (SQLException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
