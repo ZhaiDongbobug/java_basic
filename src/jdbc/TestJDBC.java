@@ -6,6 +6,7 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
+import java.util.Scanner;
 
 public class TestJDBC {
 
@@ -19,10 +20,66 @@ public class TestJDBC {
 //		executeByPreparedStatement(sql);
 //		endTime = System.currentTimeMillis();
 //		System.out.printf("使用PrepareStatement花费时间%d毫秒", endTime - startTime);
-		//list(0,5);
-		deleteForwardDate();
+		list(0,10);
+		//deleteForwardDate();
+		innodbDelete();
 	}
+	public static void innodbDelete() {
+		try {
+			// Class.forName是把这个类加载到JVM中，
+			// 加载的时候，就会执行其中的静态初始化块，
+			// 完成驱动的初始化的相关工作。
+			Class.forName("com.mysql.jdbc.Driver");
+			System.out.println("数据库驱动加载成功！");
+		} catch (ClassNotFoundException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		
+		try (
+				// 建立与数据库的Connection连接
+				Connection c = DriverManager
+						.getConnection("jdbc:mysql://127.0.0.1:3306/how2java?characterEncoding=UTF-8", "root", "admin");
+				// Statement是用于执行SQL语句的，比如增加，删除
+				//PreparedStatement ps = c.prepareStatement(sql);
+				Statement s = c.createStatement();
+				) {
+			String sqlInnodb = "alter table hero ENGINE = innodb";
+			s.execute(sqlInnodb);
+			String lookSql = "show table status from how2java";
+			ResultSet rs1 = s.executeQuery(lookSql);
+			String sql2 = "select id from hero limit 0,10";
+			ResultSet rs2 = s.executeQuery(sql2);
+			while(rs2.next()) {
+				System.out.printf("试图删除id=%d 的数据%n",rs2.getInt(1));
+			}
+			c.setAutoCommit(false);
+			String sql3 = "delete form hero where id in"
+					+ "(select top 10 id form hero)";
+			Scanner scanner = new Scanner(System.in);
+			while(true) {
+				System.out.println("是否要删除数据（Y/N）");
+				
+				if(scanner.next().equals("Y")){
+					s.execute(sql3);
+					scanner.close();
+					break;
+				}else if(scanner.next().equals("N")) {
+					scanner.close();
+					break;
+				}else {
+					continue;
+				}
+			}
+			c.commit();
+			
+			
 
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+	}
 	public static void executeByStatement(String sql) {
 		try {
 			// Class.forName是把这个类加载到JVM中，
