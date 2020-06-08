@@ -33,10 +33,16 @@ public class JdbcTest {
 		System.out.println("删除id=101的数据");
 		delete(hero);
 		total();
+		List<Hero> heros = list();
+		for (Hero h : heros) {
+			System.out.println(h.id);
+		}
 	}
 
 	public static Hero select(String sql) {
-		Hero h = new Hero();
+		// 如果查询不到就返回空
+		Hero h = null;
+		// Hero h = new Hero();
 		try {
 			Class.forName("com.mysql.jdbc.Driver");
 			System.out.println("数据库驱动加载成功！");
@@ -53,6 +59,7 @@ public class JdbcTest {
 				PreparedStatement ps = c.prepareStatement(sql);) {
 			ResultSet rs = ps.executeQuery();
 			if (rs.next()) {
+				h = new Hero();
 				h.id = rs.getInt(1);
 				h.name = rs.getString(2);
 				h.hp = rs.getFloat(3);
@@ -65,7 +72,8 @@ public class JdbcTest {
 		return h;
 	}
 
-	public static void initDate(Hero h, String sql) {
+	public static void add(Hero h) {
+		String sql = "insert into hero values(?,?,?,?)";
 		try {
 			Class.forName("com.mysql.jdbc.Driver");
 			System.out.println("数据库驱动加载成功！");
@@ -92,13 +100,8 @@ public class JdbcTest {
 		}
 	}
 
-	public static void add(Hero h) {
-		String sql = "insert into hero values(?,?,?,?)";
-		initDate(h, sql);
-	}
-
 	public static void delete(Hero h) {
-		String sql = "delete from hero where id = " + h.id;
+		String sql = "delete from hero where id = ?";
 		try {
 			Class.forName("com.mysql.jdbc.Driver");
 			System.out.println("数据库驱动加载成功！");
@@ -113,6 +116,7 @@ public class JdbcTest {
 						.getConnection("jdbc:mysql://127.0.0.1:3306/how2java?characterEncoding=UTF-8", "root", "admin");
 				// Statement是用于执行SQL语句的，比如增加，删除
 				PreparedStatement ps = c.prepareStatement(sql);) {
+			ps.setInt(1, h.id);
 			ps.execute();
 		} catch (SQLException e) {
 			// TODO Auto-generated catch block
@@ -136,10 +140,10 @@ public class JdbcTest {
 						.getConnection("jdbc:mysql://127.0.0.1:3306/how2java?characterEncoding=UTF-8", "root", "admin");
 				// Statement是用于执行SQL语句的，比如增加，删除
 				PreparedStatement ps = c.prepareStatement(sql);) {
-			ps.setInt(4, h.id);
 			ps.setString(1, h.name);
 			ps.setFloat(2, h.hp);
 			ps.setInt(3, h.damage);
+			ps.setInt(4, h.id);
 			int count = ps.executeUpdate();
 			System.out.println("有" + count + "数据受到影响");
 		} catch (SQLException e) {
@@ -150,7 +154,7 @@ public class JdbcTest {
 
 	public static List<Hero> list() {
 		List<Hero> heros = new ArrayList<>();
-		String sql = "select * from hero values(?,?,?,?)";
+		String sql = "select * from hero";
 		try {
 			Class.forName("com.mysql.jdbc.Driver");
 			System.out.println("数据库驱动加载成功！");
