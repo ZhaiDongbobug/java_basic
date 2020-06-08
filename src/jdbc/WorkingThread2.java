@@ -3,6 +3,7 @@ package jdbc;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.SQLException;
+import java.sql.Statement;
 
 
 class WorkingThread2 extends Thread {
@@ -13,16 +14,10 @@ class WorkingThread2 extends Thread {
     }
    
     public void run() {
-        Connection c = cp.getConnection();
-        Item item = new Item();
-	    item.name = "钢笔";
-	    item.price = 200; 
-	    String sql = "insert into item values(null,?,?)"; 
-        try (PreparedStatement ps = c.prepareStatement(sql)){
-        	
-        	ps.setString(1, item.name);
-			ps.setInt(2, item.price);
-            ps.execute();
+        Connection c = cp.getConnection(); 
+        try (Statement st = c.createStatement()){      	
+        	String sql = "insert into hero values(null," + "'提莫'" + "," + 313.0f + "," + 50 + ")";
+            st.execute(sql);
    
         } catch (SQLException e) {
             // TODO Auto-generated catch block
