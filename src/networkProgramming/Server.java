@@ -7,7 +7,7 @@ import java.io.InputStream;
 import java.io.OutputStream;
 import java.net.ServerSocket;
 import java.net.Socket;
-import java.util.Scanner;
+
 
 public class Server {
 
@@ -23,8 +23,9 @@ public class Server {
 	        while(true) {
 	        	String msg = dis.readUTF();
 		        System.out.println("收到客户端信息：" + msg);
-				Scanner sc = new Scanner(System.in);
-				String str = sc.next();
+		        DictionaryDAO dao = new DictionaryDAO();
+				String str = dao.getResponse(msg).response;
+				System.out.println(str);
 				dos.writeUTF(str);
 	        }       
 			//dos.close();
