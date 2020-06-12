@@ -25,13 +25,12 @@ public class DictionaryDAO {
 				"admin");
 	}
 	
-	public Dictionary getResponse(String receive) {
-		Dictionary realdictionary = null;
+	public List<Dictionary> getResponse(String receive) {
+		List<Dictionary> list = new ArrayList<>();
 		String sql = "select * from dictionary where receive = ?";
 		try (Connection c = getConnection(); PreparedStatement ps = c.prepareStatement(sql);) {
 			ps.setString(1, receive);
-			ResultSet rs = ps.executeQuery();
-			List<Dictionary> list = new ArrayList<>();
+			ResultSet rs = ps.executeQuery();			
 			while (rs.next()) {
 				Dictionary dictionary = new Dictionary();
 				int id = rs.getInt(1);
@@ -40,12 +39,12 @@ public class DictionaryDAO {
 				dictionary.response = response;
 				list.add(dictionary);
 			}
-			realdictionary =  list.get((int)(Math.random()*(list.size()-1)));
+			
 		} catch (SQLException e) {
 
 			e.printStackTrace();
 		}
-		return realdictionary;
+		return list;
 	}
 	
 	public Dictionary getReceive(String response) {

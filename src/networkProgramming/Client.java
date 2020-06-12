@@ -12,19 +12,21 @@ import java.util.Scanner;
 public class Client {
 
 	public static void main(String[] args) {
-		Socket s;
 		try {
-			s = new Socket("127.0.0.1", 8888);
+			Socket s = new Socket("127.0.0.1", 8888);
+			
 			InputStream is = s.getInputStream();	 
 	        DataInputStream dis = new DataInputStream(is);
 	        OutputStream os = s.getOutputStream();
 			DataOutputStream dos = new DataOutputStream(os);
+			
 			while(true) {
 				Scanner sc = new Scanner(System.in);
-				String str = sc.next();
+				String str = sc.nextLine();
 				dos.writeUTF(str);
 				String msg = dis.readUTF();
-		        System.out.println("收到服务端信息：" + msg);
+		        System.out.println(msg);
+		        System.out.println();
 			}
 	        
 	        //dis.close();
