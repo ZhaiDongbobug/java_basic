@@ -12,7 +12,7 @@ public class stringTran {
 		float f2 = Float.parseFloat(str1);
 		System.out.println(f2);//不合法，抛出异常，应该输入数字
 		Float.parseFloat("3.1a4");//如果字符串内容不是合法的数字表达，
-		那么转换就会报错(抛出异常)
+		//那么转换就会报错(抛出异常)
 	}
 
 }
